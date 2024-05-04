@@ -1,0 +1,60 @@
+﻿@page "/keycapture"
+@inject IKeyCodeService KeyCodeService
+@implements IAsyncDisposable
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="30" Style="padding:15px">
+
+    <FluentLabel Typo="Typography.PageTitle">KeyCapture</FluentLabel>
+    <FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
+    <FluentLabel Typo="Typography.Subject">Global Capture</FluentLabel>
+    <FluentLabel Typo="Typography.Body">押したキー(Value)は  @key</FluentLabel>
+    <FluentLabel Typo="Typography.Body">押したキー(Key)は  @keyCode</FluentLabel>
+    <FluentLabel Typo="Typography.Body">押したキー(Code)は  @keyCodeInt</FluentLabel>
+    </FluentStack>
+    <FluentStack Orientation="Orientation.Vertical" VerticalGap="10">
+    <FluentLabel Typo="Typography.Subject">Local Capture</FluentLabel>
+    <FluentKeyCode OnKeyDown="@KeyDownHandler">
+        <FluentCard tabindex="0" Width="300px" Height="140px">
+            Click here and press <FluentKeyCode tabindex="0" OnKeyDown="@KeyDownHandler" StopPropagation="true">any key</FluentKeyCode> to get the event keycode info.
+        </FluentCard>
+    </FluentKeyCode>
+    <FluentLabel Typo="Typography.Body">Last Key: @LastKeyCode</FluentLabel>
+    <FluentLabel Typo="Typography.Body">Last Key: @LastKeyCode?.Key</FluentLabel>
+    <FluentLabel Typo="Typography.Body">Last Key: @LastKeyCode?.KeyCode</FluentLabel>
+    </FluentStack>
+</FluentStack>
+
+@code {
+
+    private string key = string.Empty;
+    private KeyCode keyCode;
+    private int keyCodeInt;
+    protected override void OnInitialized()
+    {
+        KeyCodeService.RegisterListener(OnKeyDownAsync);
+    }
+
+
+    private Task OnKeyDownAsync(FluentKeyCodeEventArgs e)
+    {
+        Console.WriteLine($"Key Down: {e.Key}");
+        key = e.ToString();
+        keyCode = e.Key;
+        keyCodeInt = e.KeyCode;
+        StateHasChanged();
+        return Task.CompletedTask;
+    }
+
+
+    public ValueTask DisposeAsync()
+    {
+        KeyCodeService.UnregisterListener(OnKeyDownAsync);
+        return ValueTask.CompletedTask;
+    }
+
+    FluentKeyCodeEventArgs? LastKeyCode;
+
+    void KeyDownHandler(FluentKeyCodeEventArgs e)
+    {
+        LastKeyCode = e;
+    }
+}

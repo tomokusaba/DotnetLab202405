@@ -1,0 +1,82 @@
+﻿@page "/DataGridWidth"
+@using DotnetLab202405.Data
+@inject HttpClient Http
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="30" Style="padding:15px">
+
+<FluentLabel Typo="Typography.PageTitle">DataGridWidth</FluentLabel>
+
+@if (forecasts == null)
+{
+    <FluentDataGrid GenerateHeader="GenerateHeaderOption.None" TGridItem="string">
+        <FluentDataGridRow RowType="DataGridRowType.Header">
+            <FluentDataGridCell GridColumn="1" CellType="DataGridCellType.ColumnHeader">Date</FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2" CellType="DataGridCellType.ColumnHeader">Temp. (C)</FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3" CellType="DataGridCellType.ColumnHeader">Temp. (F)</FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4" CellType="DataGridCellType.ColumnHeader">Summary</FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+        <FluentDataGridRow>
+            <FluentDataGridCell GridColumn="1"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="2"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="3"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+            <FluentDataGridCell GridColumn="4"><FluentSkeleton Height="20" Width="30" /></FluentDataGridCell>
+        </FluentDataGridRow>
+
+    </FluentDataGrid>
+}
+else
+{
+    <FluentDataGrid Items="@forecasts.AsQueryable()" TGridItem="WeatherForecast" ResizableColumns="true">
+        <SelectColumn TGridItem="WeatherForecast" 
+            SelectMode="DataGridSelectMode.Multiple" 
+            Property="@(e => e.Selected)" 
+            OnSelect="@(e => e.Item.Selected = e.Selected)" 
+            SelectAll="@(forecasts.All(p => p.Selected))"
+                      SelectAllChanged="@(all => forecasts.ToList().ForEach(p => p.Selected = (all == true)))" />
+        <PropertyColumn Property="@(p => p.Date.ToShortDateString())" Title="Date(250px)" Width="250px" />
+        <PropertyColumn Property="@(p => p.TemperatureC)" Title="Temp. (C)(150px)" Width="150px" />
+        <PropertyColumn Property="@(p => p.TemperatureF)" Title="Temp. (F)(150px)" Width="150px" />
+        <PropertyColumn Property="@(p => p.Summary)" Title="Summary(200px)" Width="200px" />
+    </FluentDataGrid>
+
+    <div>
+        <b>Selected Date:</b>
+        @String.Join("; ", forecasts.Where(p => p.Selected).Select(p => p.Date))
+    </div>
+}
+</FluentStack>
+@code {
+    private WeatherForecast[]? forecasts;
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+            await Task.Delay(10);
+            StateHasChanged();
+        }
+    }
+}

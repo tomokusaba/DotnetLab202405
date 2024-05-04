@@ -1,0 +1,85 @@
+﻿@*<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">DotnetLab202405</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
+    <nav class="flex-column">
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="counter">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="weather">
+                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
+            </NavLink>
+        </div>
+    </nav>
+</div>
+*@
+
+<FluentStack Orientation="Orientation.Vertical" Style="height:100%" Width="50px">
+    <FluentAppBar Style="height:100%; background-color: var(--neutral-layer-2)">
+        <FluentAppBarItem Href="/"
+                          Match="NavLinkMatch.All"
+                          Text="Home"
+                          IconRest="HomeIcon()"
+                          IconActive="HomeIcon(active: true)" />
+        @* <FluentAppBarItem Href="/datetimepicker"
+        Match="NavLinkMatch.All"
+        Text="DatePicker"
+        IconRest="DateTimeIcon()"
+        IconActive="DateTimeIcon(active: true)" />*@
+        <FluentAppBarItem Href="/keycapture"
+                          Match="NavLinkMatch.All"
+                          Text="KeyCapture"
+                          IconRest="KeyCodeIcon()"
+                          IconActive="KeyCodeIcon(active: true)" />
+        <FluentAppBarItem Href="/DataGridWidth"
+                          Match="NavLinkMatch.All"
+                          Text="DataGrid"
+                          IconRest="DataGridWidthIcon()"
+                          IconActive="DataGridWidthIcon(active: true)" />
+
+    </FluentAppBar>
+</FluentStack>
+
+
+@code {
+    private static Icon HomeIcon(bool active = false) =>
+    active ? new Icons.Filled.Size24.Home()
+    : new Icons.Regular.Size24.Home();
+
+    private static Icon DateTimeIcon(bool active = false) =>
+    active ? new Icons.Filled.Size24.CalendarDate()
+    : new Icons.Regular.Size24.CalendarDate();
+
+
+    private static Icon KeyCodeIcon(bool active = false) =>
+    active ? new Icons.Filled.Size24.Keyboard()
+    : new Icons.Regular.Size24.Keyboard();
+
+    private static Icon DataGridWidthIcon(bool active = false) =>
+    active ? new Icons.Filled.Size24.Grid()
+    : new Icons.Regular.Size24.Grid();
+
+
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}
