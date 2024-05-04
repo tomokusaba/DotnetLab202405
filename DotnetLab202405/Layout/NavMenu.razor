@@ -28,7 +28,7 @@
 </div>
 *@
 
-<FluentStack Orientation="Orientation.Vertical" Style="height:100%" Width="50px">
+<FluentStack Orientation="Orientation.Vertical" Style="height:100%" Width="80px">
     <FluentAppBar Style="height:100%; background-color: var(--neutral-layer-2)">
         <FluentAppBarItem Href="/"
                           Match="NavLinkMatch.All"
@@ -45,6 +45,11 @@
                           Text="KeyCapture"
                           IconRest="KeyCodeIcon()"
                           IconActive="KeyCodeIcon(active: true)" />
+        <FluentAppBarItem Href="/PullRefresh"
+                          Match="NavLinkMatch.All"
+                          Text="Pull To Refresh"
+                          IconRest="PullToRefreshIcon()"
+                          IconActive="PullToRefreshIcon(active: true)" />
         <FluentAppBarItem Href="/DataGridWidth"
                           Match="NavLinkMatch.All"
                           Text="DataGrid"
@@ -72,6 +77,11 @@
     private static Icon DataGridWidthIcon(bool active = false) =>
     active ? new Icons.Filled.Size24.Grid()
     : new Icons.Regular.Size24.Grid();
+
+    
+    private static Icon PullToRefreshIcon(bool active = false) =>
+    active ? new Icons.Filled.Size24.PhoneFooterArrowDown()
+    : new Icons.Regular.Size24.PhoneFooterArrowDown();
 
 
     private bool collapseNavMenu = true;

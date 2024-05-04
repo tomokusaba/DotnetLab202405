@@ -1,0 +1,21 @@
+﻿@page "/PullRefresh"
+<FluentStack Orientation="Orientation.Vertical" VerticalGap="30" Style="padding:15px">
+
+<FluentLabel Typo="Typography.PageTitle">PullToRefresh</FluentLabel>
+
+<FluentPullToRefresh OnRefreshAsync="OnRefreshAsync">
+    <FluentListbox Items="items.OrderDescending()" />
+</FluentPullToRefresh>
+
+</FluentStack>
+@code {
+    List<string> items = new List<string>();
+
+    private async Task<bool> OnRefreshAsync()
+    {
+        await Task.Delay(200);
+
+        items.Add(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+        return true;
+    }
+}
