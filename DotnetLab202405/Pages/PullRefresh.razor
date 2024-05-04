@@ -11,6 +11,12 @@
 @code {
     List<string> items = new List<string>();
 
+    protected override void OnInitialized()
+    {
+        items.Add(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss"));
+    }
+
+
     private async Task<bool> OnRefreshAsync()
     {
         await Task.Delay(200);
