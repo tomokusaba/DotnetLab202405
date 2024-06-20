@@ -55,6 +55,11 @@
                           Text="DataGrid"
                           IconRest="DataGridWidthIcon()"
                           IconActive="DataGridWidthIcon(active: true)" />
+        <FluentAppBarItem Href="/calendar"
+                          Match="NavLinkMatch.All"
+                          Text="Calendar"
+                          IconRest="CalendarIcon()"
+                          IconActive="CalendarIcon(active: true)" />
 
     </FluentAppBar>
 </FluentStack>
@@ -82,6 +87,11 @@
     private static Icon PullToRefreshIcon(bool active = false) =>
     active ? new Icons.Filled.Size24.PhoneFooterArrowDown()
     : new Icons.Regular.Size24.PhoneFooterArrowDown();
+
+    private static Icon CalendarIcon(bool active = false) =>
+    active ? new Icons.Filled.Size24.Calendar()
+    : new Icons.Regular.Size24.Calendar();
+
 
 
     private bool collapseNavMenu = true;
